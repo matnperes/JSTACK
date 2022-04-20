@@ -1,78 +1,48 @@
-/* eslint-disable camelcase */
-const contactRepository = require('../repositories/ContactRepository');
+const ContactRepositorie = require('../repositories/ContactRepositories');
 
 class ContactController {
   async index(req, res) {
-    const contacts = await contactRepository.findAll();
+    const contacts = await ContactRepositorie.findAll();
+
+    if (contacts) {
+      res.status(404).json({ error: 'Contact not found !' });
+    }
 
     res.json(contacts);
-  }
+  }// list all register
 
   async show(req, res) {
-    const { id } = await req.params;
-    const contact = await contactRepository.findById(id);
-    if (!contact) {
-      return res.status(404).json({ error: 'Contact Not Found' });
-    }
-
-    res.json(contact);
-  }
-
-  async store(req, res) {
-    const {
-      // eslint-disable-next-line camelcase
-      name, email, phone,
-    } = req.body;
-
-    if (!name) {
-      return res.status(400).json({ error: 'The fill "name" is not complete' });
-    }
-
-    const contactExist = await contactRepository.findByEmail(email);
-
-    if (contactExist) {
-      return res.status(400).json({ error: 'This e-mail is already in use' });
-    }
-    const contact = await contactRepository.addContact({
-      // eslint-disable-next-line camelcase
-      name, email, phone,
-    });
-    res.json(contact);
-  }
-
-  async update(req, res) {
     const { id } = req.params;
-    const {
-      name, email, phone, category_id,
-    } = req.body;
+    const contact = await ContactRepositorie.findById(id);
 
-    if (!name) {
-      return res.status(400).json({ error: 'The fill "name" is not complete' });
+    if (!contact) {
+      // 404: not found
+      return res.status(404).json({ error: 'Contact not found!' });
     }
-
-    const contactByEmail = await contactRepository.findById(id);
-
-    if (!contactByEmail && contactByEmail.id !== id) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const contact = await contactRepository.update(id, {
-      name, email, phone, category_id,
-    });
 
     res.json(contact);
-  }
+  }// Get a register
+
+  store() {
+
+  }// Create a register
+
+  update() {
+
+  }// update a register
 
   async delete(req, res) {
     const { id } = req.params;
-    const contact = await contactRepository.findById(id);
+    const contact = await ContactRepositorie.findById(id);
 
     if (!contact) {
-      return res.status(404).json({ error: 'Contact Not Found' });
+      return res.status(404).json({ error: 'Contact not found!' });
     }
-    await contactRepository.delete(id);
+
+    await ContactRepositorie.delete(id);
     res.sendStatus(204);
-  }
+  }// delete a register
 }
 
+// singleton
 module.exports = new ContactController();

@@ -1,7 +1,0 @@
-Data source: Fonte de dados (Array, SQL, NoSQL, .Json, API)
-
-Repository Pattern: Layer (camada) de abstração de acesso ao Data Source.
-
-
-Em vez de: Controller <-> Data Source
-Ficamos assim: Controller <-> Repository <-> Data source
