@@ -4,7 +4,7 @@ class ContactController {
   async index(req, res) {
     const contacts = await ContactRepositorie.findAll();
 
-    if (contacts) {
+    if (!contacts) {
       res.status(404).json({ error: 'Contact not found !' });
     }
 
@@ -23,8 +23,22 @@ class ContactController {
     res.json(contact);
   }// Get a register
 
-  store() {
+  async store(req, res) {
+    const { name, email } = req.body;
 
+    if (!name) {
+      res.status(400).json({ error: 'Name is required' });
+    }
+
+    const contactExist = await ContactRepositorie.findByEmail(email);
+
+    if (contactExist) {
+      res.status(400).json({ error: 'This contact already exist' });
+    }
+
+    const contact = await ContactRepositorie.create({ name, email });
+
+    res.json(contact);
   }// Create a register
 
   update() {

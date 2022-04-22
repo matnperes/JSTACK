@@ -15,5 +15,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'no-promise-executor-return': 'off',
     'consistent-return': 'off',
+    'import/no-unresolved': 'off',
+    camelcase: 'off',
   },
 };
