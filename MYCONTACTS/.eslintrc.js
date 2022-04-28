@@ -17,5 +17,6 @@ module.exports = {
     'consistent-return': 'off',
     'import/no-unresolved': 'off',
     camelcase: 'off',
+    'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
   },
 };
